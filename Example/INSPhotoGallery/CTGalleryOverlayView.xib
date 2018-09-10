@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CTGalleryOverlayView" customModule="INSPhotoGallery_Example" customModuleProvider="target">
@@ -19,7 +23,7 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EdH-EW-8l5">
@@ -30,55 +34,55 @@
                     </constraints>
                     <state key="normal" image="btnClose"/>
                     <connections>
-                        <action selector="closeBtnClick:" destination="-1" eventType="touchUpInside" id="XMI-iD-aQh"/>
+                        <action selector="closeBtnClick" destination="-1" eventType="touchUpInside" id="LOJ-fr-Ygr"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lblTitle" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RoY-ct-vyd">
-                    <rect key="frame" x="20" y="565" width="560" height="17"/>
+                    <rect key="frame" x="20" y="632" width="335" height="17"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="17" id="FE8-8M-SDE"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gH4-qy-d53">
-                    <rect key="frame" x="10" y="265" width="30" height="70"/>
+                    <rect key="frame" x="10" y="298.5" width="30" height="70"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="70" id="cL3-l1-WEH"/>
                         <constraint firstAttribute="width" constant="30" id="pDV-gZ-Ypj"/>
                     </constraints>
                     <state key="normal" image="icoGalleryArrowLeft"/>
                     <connections>
-                        <action selector="prevBtnClick:" destination="-1" eventType="touchUpInside" id="xF8-wd-mWu"/>
+                        <action selector="prevBtnClick" destination="-1" eventType="touchUpInside" id="Fsz-1v-hgg"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2U-1S-1OB">
-                    <rect key="frame" x="560" y="265" width="30" height="70"/>
+                    <rect key="frame" x="335" y="298.5" width="30" height="70"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="30" id="5GC-k1-cnU"/>
                         <constraint firstAttribute="height" constant="70" id="Jeh-bj-bGQ"/>
                     </constraints>
                     <state key="normal" image="icoGalleryArrowRight"/>
                     <connections>
-                        <action selector="nextBtnClick:" destination="-1" eventType="touchUpInside" id="DQU-G1-WSm"/>
+                        <action selector="nextBtnClick" destination="-1" eventType="touchUpInside" id="flL-mn-nKS"/>
                     </connections>
                 </button>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z4O-fr-Bwv">
-                    <rect key="frame" x="0.0" y="520" width="600" height="40"/>
+                    <rect key="frame" x="0.0" y="587" width="375" height="40"/>
                     <subviews>
                         <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ns-xzJ">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
-                            <color key="backgroundColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.31372549019607843" alpha="0.75" colorSpace="calibratedRGB"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                            <color key="backgroundColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.31372549019607843" alpha="0.75" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0NQ-vI-4FO">
-                            <rect key="frame" x="560" y="0.0" width="40" height="40"/>
+                            <rect key="frame" x="335" y="0.0" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="bTy-JA-xxc"/>
                             </constraints>
                             <state key="normal" image="btnVideoFullscreen"/>
                             <connections>
-                                <action selector="videoFullBtnClick:" destination="-1" eventType="touchUpInside" id="Qjc-2P-uUN"/>
+                                <action selector="videoFullBtnClick" destination="-1" eventType="touchUpInside" id="rjV-rG-Wjk"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kAG-Fh-UZj">
@@ -88,28 +92,28 @@
                             </constraints>
                             <state key="normal" image="btnVideoPlay"/>
                             <connections>
-                                <action selector="videoPlayBtnClick:" destination="-1" eventType="touchUpInside" id="Hgn-9q-vZX"/>
+                                <action selector="videoPlayBtnClick" destination="-1" eventType="touchUpInside" id="xZN-hk-00E"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lblTime" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ocf-uV-nAj">
-                            <rect key="frame" x="500" y="0.0" width="60" height="40"/>
+                            <rect key="frame" x="275" y="0.0" width="60" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="QKo-sU-8kW"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="UZ5-Uc-hVB">
-                            <rect key="frame" x="40" y="19" width="460" height="2"/>
+                            <rect key="frame" x="40" y="19" width="235" height="2"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="2" id="18F-n7-7K7"/>
                             </constraints>
-                            <color key="progressTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <color key="trackTintColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                            <color key="progressTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="trackTintColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                         </progressView>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="kAG-Fh-UZj" firstAttribute="leading" secondItem="Z4O-fr-Bwv" secondAttribute="leading" id="1hY-zL-xCt"/>
                         <constraint firstAttribute="trailing" secondItem="yhO-Ns-xzJ" secondAttribute="trailing" id="1mm-dQ-xAs"/>
@@ -131,7 +135,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="EdH-EW-8l5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0nF-Gm-leA"/>
                 <constraint firstItem="RoY-ct-vyd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="194-fL-MaX"/>

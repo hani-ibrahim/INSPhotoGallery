@@ -33,7 +33,7 @@ class CTGalleryOverlayView: INSNibLoadedView {
         return nil
     }
     
-    @IBAction func nextBtnClick(sender: AnyObject) {
+    @IBAction func nextBtnClick() {
         guard let photosViewController = self.photosViewController,
             let index = photosViewController.currentDataSource.indexOfPhoto(photosViewController.currentPhoto!),
             index < photosViewController.currentDataSource.numberOfPhotos - 1 else {
@@ -42,7 +42,7 @@ class CTGalleryOverlayView: INSNibLoadedView {
         photosViewController.changeToPhoto(photosViewController.currentDataSource.photoAtIndex(index + 1)!, animated: true)
     }
     
-    @IBAction func prevBtnClick(sender: AnyObject) {
+    @IBAction func prevBtnClick() {
         guard let photosViewController = self.photosViewController,
             let index = photosViewController.currentDataSource.indexOfPhoto(photosViewController.currentPhoto!),
             index > 0 else {
@@ -51,11 +51,11 @@ class CTGalleryOverlayView: INSNibLoadedView {
         photosViewController.changeToPhoto(photosViewController.currentDataSource.photoAtIndex(index - 1)!, animated: true)
     }
     
-    @IBAction func closeBtnClick(sender: AnyObject) {
+    @IBAction func closeBtnClick() {
         photosViewController?.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func videoPlayBtnClick(sender: AnyObject) {
+    @IBAction func videoPlayBtnClick() {
         if let _ = photosViewController!.currentPhoto?.videoURL{
             if let player = photosViewController!.currentPhotoViewController?.videoPlayer {
                 if (player.rate != 0 && player.error == nil) {
@@ -69,7 +69,7 @@ class CTGalleryOverlayView: INSNibLoadedView {
         }
     }
     
-    @IBAction func videoFullBtnClick(sender: AnyObject) {
+    @IBAction func videoFullBtnClick() {
         if let playerLayer = photosViewController!.currentPhotoViewController?.videoPlayerLayer {
             if playerLayer.videoGravity == .resizeAspect {
                 playerLayer.videoGravity = .resizeAspectFill
