@@ -19,7 +19,7 @@ class CTVideoPhotoViewController: UIViewController {
             CTGalleryPhoto(image: UIImage(named: "fullSizeImage")!, thumbnailImage: UIImage(named: "thumbnailImage")!),
             CTGalleryPhoto(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"), thumbnailImageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg")),
             CTGalleryPhoto(videoURL: URL(string: "https://a0.muscache.com/airbnb/static/belo-3.mp4"), thumbnailImageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg")),
-            CTGalleryPhoto(videoURL: URL(fileURLWithPath: NSBundle.mainBundle().pathForResource("splash", ofType: "mp4")!), thumbnailImageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"))
+            CTGalleryPhoto(videoURL: URL(fileURLWithPath: Bundle.main.path(forResource: "splash", ofType: "mp4")!), thumbnailImageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"))
         ]
     }()
     
@@ -32,31 +32,32 @@ class CTVideoPhotoViewController: UIViewController {
 }
 
 extension CTVideoPhotoViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ExampleCollectionViewCell", forIndexPath: indexPath) as! ExampleCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExampleCollectionViewCell", for: indexPath) as! ExampleCollectionViewCell
         cell.populateWithPhoto(photos[indexPath.row])
         
         return cell
     }
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ExampleCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! ExampleCollectionViewCell
         let currentPhoto = photos[indexPath.row]
         let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
         let overylayView = CTGalleryOverlayView(frame: CGRect.zero)
         galleryPreview.overlayView = overylayView
         
         galleryPreview.referenceViewForPhotoWhenDismissingHandler = { [weak self] photo in
-            if let index = self?.photos.indexOf({$0 === photo}) {
-                let indexPath = NSIndexPath(forItem: index, inSection: 0)
-                let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ExampleCollectionViewCell
+            if let index = self?.photos.firstIndex(where: {$0 === photo}) {
+                let indexPath = IndexPath(item: index, section: 0)
+                let cell = collectionView.cellForItem(at: indexPath) as? ExampleCollectionViewCell
                 return cell
             }
             return nil
         }
-        presentViewController(galleryPreview, animated: true, completion: nil)
+        present(galleryPreview, animated: true, completion: nil)
     }
 }

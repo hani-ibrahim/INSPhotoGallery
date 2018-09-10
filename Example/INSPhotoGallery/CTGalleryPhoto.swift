@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Haneke
 import INSPhotoGalleryFramework
 
 class CTGalleryPhoto: NSObject, INSPhotoViewable {
@@ -27,7 +26,7 @@ class CTGalleryPhoto: NSObject, INSPhotoViewable {
     var itemType = CTGalleryPhotoType.Photo
     
     var attributedTitle: NSAttributedString? {
-        return NSAttributedString(string: "Example caption text", attributes: [NSForegroundColorAttributeName: UIColor.whiteColor()])
+        return NSAttributedString(string: "Example caption text", attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
     }
     
     init(image: UIImage?, thumbnailImage: UIImage?) {
@@ -40,12 +39,12 @@ class CTGalleryPhoto: NSObject, INSPhotoViewable {
         self.thumbnailImageURL = thumbnailImageURL
     }
     
-    init (imageURL: URL?, thumbnailImage: UIImage) {
+    init(imageURL: URL?, thumbnailImage: UIImage) {
         self.imageURL = imageURL
         self.thumbnailImage = thumbnailImage
     }
     
-    init (videoURL: URL?, thumbnailImage: UIImage) {
+    init(videoURL: URL?, thumbnailImage: UIImage) {
         self.videoURL = videoURL
         self.thumbnailImage = thumbnailImage
     }
@@ -55,30 +54,40 @@ class CTGalleryPhoto: NSObject, INSPhotoViewable {
         self.thumbnailImageURL = thumbnailImageURL
     }
     
-    func loadImageWithCompletionHandler(completion: (image: UIImage?, error: NSError?) -> ()) {
-        if let url = imageURL {
-            Shared.imageCache.fetch(URL: url).onSuccess({ image in
-                completion(image: image, error: nil)
-            }).onFailure({ error in
-                completion(image: nil, error: error)
-            })
-        } else {
-            completion(image: nil, error: NSError(domain: "PhotoDomain", code: -1, userInfo: [ NSLocalizedDescriptionKey: "Couldn't load image"]))
-        }
-    }
-    func loadThumbnailImageWithCompletionHandler(completion: (image: UIImage?, error: NSError?) -> ()) {
-        if let thumbnailImage = thumbnailImage {
-            completion(image: thumbnailImage, error: nil)
+    func loadImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
+        if let image = image {
+            completion(image, nil)
             return
         }
-        if let url = thumbnailImageURL {
-            Shared.imageCache.fetch(URL: url).onSuccess({ image in
-                completion(image: image, error: nil)
-            }).onFailure({ error in
-                completion(image: nil, error: error)
-            })
+        loadImageWithURL(imageURL, completion: completion)
+    }
+    
+    func loadThumbnailImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
+        if let thumbnailImage = thumbnailImage {
+            completion(thumbnailImage, nil)
+            return
+        }
+        loadImageWithURL(thumbnailImageURL, completion: completion)
+    }
+    
+    func loadImageWithURL(_ url: URL?, completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        
+        if let imageURL = url {
+            session.dataTask(with: imageURL, completionHandler: { (response, data, error) in
+                DispatchQueue.main.async(execute: { () -> Void in
+                    if error != nil {
+                        completion(nil, error)
+                    } else if let response = response, let image = UIImage(data: response) {
+                        completion(image, nil)
+                    } else {
+                        completion(nil, NSError(domain: "INSPhotoDomain", code: -1, userInfo: [ NSLocalizedDescriptionKey: "Couldn't load image"]))
+                    }
+                    session.finishTasksAndInvalidate()
+                })
+            }).resume()
         } else {
-            completion(image: nil, error: NSError(domain: "PhotoDomain", code: -1, userInfo: [ NSLocalizedDescriptionKey: "Couldn't load image"]))
+            completion(nil, NSError(domain: "INSPhotoDomain", code: -2, userInfo: [ NSLocalizedDescriptionKey: "Image URL not found."]))
         }
     }
 }

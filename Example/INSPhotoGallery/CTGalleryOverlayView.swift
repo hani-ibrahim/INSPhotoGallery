@@ -26,54 +26,57 @@ class CTGalleryOverlayView: INSNibLoadedView {
     
 
     // Pass the touches down to other views
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        if let hitView = super.hitTest(point, withEvent: event) where hitView != self {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if let hitView = super.hitTest(point, with: event), hitView != self {
             return hitView
         }
         return nil
     }
+    
     @IBAction func nextBtnClick(sender: AnyObject) {
-        if let photosViewController = self.photosViewController{
-            let index = photosViewController.currentDataSource.indexOfPhoto(photosViewController.currentPhoto!)
-            if index < photosViewController.currentDataSource.numberOfPhotos-1{
-                photosViewController.changeToPhoto(photosViewController.currentDataSource.photoAtIndex(index!+1)!, animated: true)
-            }
+        guard let photosViewController = self.photosViewController,
+            let index = photosViewController.currentDataSource.indexOfPhoto(photosViewController.currentPhoto!),
+            index < photosViewController.currentDataSource.numberOfPhotos - 1 else {
+                return
         }
+        photosViewController.changeToPhoto(photosViewController.currentDataSource.photoAtIndex(index + 1)!, animated: true)
     }
+    
     @IBAction func prevBtnClick(sender: AnyObject) {
-        if let photosViewController = self.photosViewController{
-            let index = photosViewController.currentDataSource.indexOfPhoto(photosViewController.currentPhoto!)
-            if index > 0{
-                photosViewController.changeToPhoto(photosViewController.currentDataSource.photoAtIndex(index!-1)!, animated: true)
-            }
+        guard let photosViewController = self.photosViewController,
+            let index = photosViewController.currentDataSource.indexOfPhoto(photosViewController.currentPhoto!),
+            index > 0 else {
+                return
         }
+        photosViewController.changeToPhoto(photosViewController.currentDataSource.photoAtIndex(index - 1)!, animated: true)
     }
+    
     @IBAction func closeBtnClick(sender: AnyObject) {
-        photosViewController?.dismissViewControllerAnimated(true, completion: nil)
+        photosViewController?.dismiss(animated: true, completion: nil)
     }
-    @IBAction func videoPlayBtnClick(sender: AnyObject){
+    
+    @IBAction func videoPlayBtnClick(sender: AnyObject) {
         if let _ = photosViewController!.currentPhoto?.videoURL{
-            if let player = photosViewController!.currentPhotoViewController?.videoPlayer{
+            if let player = photosViewController!.currentPhotoViewController?.videoPlayer {
                 if (player.rate != 0 && player.error == nil) {
                     player.pause()
-                    videoPlayBtn.setImage(UIImage(named: "btnVideoPlay"), forState: .Normal)
-                }
-                else{
+                    videoPlayBtn.setImage(UIImage(named: "btnVideoPlay"), for: .normal)
+                } else {
                     player.play()
-                    videoPlayBtn.setImage(UIImage(named: "btnVideoPause"), forState: .Normal)
+                    videoPlayBtn.setImage(UIImage(named: "btnVideoPause"), for: .normal)
                 }
             }
         }
     }
-    @IBAction func videoFullBtnClick(sender: AnyObject){
-        if let playerLayer = photosViewController!.currentPhotoViewController?.videoPlayerLayer{
-            if playerLayer.videoGravity == AVLayerVideoGravityResizeAspect{
-                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-                videofullBtn.setImage(UIImage(named: "btnVideoExit"), forState: .Normal)
-            }
-            else{
-                playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
-                videofullBtn.setImage(UIImage(named: "btnVideoFullscreen"), forState: .Normal)
+    
+    @IBAction func videoFullBtnClick(sender: AnyObject) {
+        if let playerLayer = photosViewController!.currentPhotoViewController?.videoPlayerLayer {
+            if playerLayer.videoGravity == .resizeAspect {
+                playerLayer.videoGravity = .resizeAspectFill
+                videofullBtn.setImage(UIImage(named: "btnVideoExit"), for: .normal)
+            } else {
+                playerLayer.videoGravity = .resizeAspect
+                videofullBtn.setImage(UIImage(named: "btnVideoFullscreen"), for: .normal)
             }
         }
     }
@@ -81,88 +84,92 @@ class CTGalleryOverlayView: INSNibLoadedView {
 }
 
 extension CTGalleryOverlayView: INSPhotosOverlayViewable {
+    
     func view() -> UIView {
         setupView()
         return self
     }
-    func populateWithPhoto(photo: INSPhotoViewable) {
+    
+    func populateWithPhoto(_ photo: INSPhotoViewable) {
         setupView()
     }
-    func setHidden(hidden: Bool, animated: Bool) {
-        if self.hidden == hidden {
+    
+    func setHidden(_ hidden: Bool, animated: Bool) {
+        if self.isHidden == hidden {
             return
         }
         
         if animated {
-            self.hidden = false
+            self.isHidden = false
             self.alpha = hidden ? 1.0 : 0.0
-            UIView.animateWithDuration(0.2, delay: 0.0, options: [.CurveEaseInOut, .AllowAnimatedContent, .AllowUserInteraction], animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut, .allowAnimatedContent, .allowUserInteraction], animations: { () -> Void in
                 self.alpha = hidden ? 0.0 : 1.0
-                }, completion: { result in
-                    self.alpha = 1.0
-                    self.hidden = hidden
+            }, completion: { result in
+                self.alpha = 1.0
+                self.isHidden = hidden
             })
         } else {
-            self.hidden = hidden
+            self.isHidden = hidden
         }
     }
-    func setupView(){
+    
+    func setupView() {
         if let photosViewController = photosViewController {
             let index = photosViewController.currentDataSource.indexOfPhoto(photosViewController.currentPhoto!)!+1
             lblTitle.text = "\(index) / \(photosViewController.currentDataSource.numberOfPhotos)"
-            leftArrow.hidden = false
-            rightArrow.hidden = false
-            if index == 1{
-                leftArrow.hidden = true
+            leftArrow.isHidden = false
+            rightArrow.isHidden = false
+            if index == 1 {
+                leftArrow.isHidden = true
+            } else if index==photosViewController.currentDataSource.numberOfPhotos {
+                rightArrow.isHidden = true
             }
-            else if index==photosViewController.currentDataSource.numberOfPhotos{
-                rightArrow.hidden = true
-            }
-            if let _ = photosViewController.currentPhoto?.videoURL{
+            if let _ = photosViewController.currentPhoto?.videoURL {
                 if let player = photosViewController.currentPhotoViewController?.videoPlayer{
                     if (player.rate != 0 && player.error == nil) {
-                        videoPlayBtn.setImage(UIImage(named: "btnVideoPause"), forState: .Normal)
+                        videoPlayBtn.setImage(UIImage(named: "btnVideoPause"), for: .normal)
                     }
                     else{
-                        videoPlayBtn.setImage(UIImage(named: "btnVideoPlay"), forState: .Normal)
+                        videoPlayBtn.setImage(UIImage(named: "btnVideoPlay"), for: .normal)
                     }
                     
-                    if let playerLayer = photosViewController.currentPhotoViewController?.videoPlayerLayer{
-                        if playerLayer.videoGravity == AVLayerVideoGravityResizeAspect{
-                            videofullBtn.setImage(UIImage(named: "btnVideoFullscreen"), forState: .Normal)
+                    if let playerLayer = photosViewController.currentPhotoViewController?.videoPlayerLayer {
+                        if playerLayer.videoGravity == .resizeAspect {
+                            videofullBtn.setImage(UIImage(named: "btnVideoFullscreen"), for: .normal)
                         }
                         else{
-                            videofullBtn.setImage(UIImage(named: "btnVideoExit"), forState: .Normal)
+                            videofullBtn.setImage(UIImage(named: "btnVideoExit"), for: .normal)
                         }
                     }
-                    if let observer = photosViewController.currentPhotoViewController?.videoPlayerObserver{
+                    if let observer = photosViewController.currentPhotoViewController?.videoPlayerObserver {
                         player.removeTimeObserver(observer)
                     }
-                    photosViewController.currentPhotoViewController?.videoPlayerObserver = player.addPeriodicTimeObserverForInterval(CMTimeMake(1, 1), queue: dispatch_get_main_queue(), usingBlock: {_ in
+                    photosViewController.currentPhotoViewController?.videoPlayerObserver = player.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 1), queue: DispatchQueue.main, using: { _ in
                         self.updateTimeFrame(player)
-                    })
+                    }) as AnyObject
                     self.updateTimeFrame(player)
-                    videoControl.hidden = false
+                    videoControl.isHidden = false
                 }
             }
             else{
-                videoControl.hidden = true
+                videoControl.isHidden = true
             }
         }
     }
-    func updateTimeFrame(player:AVPlayer) {
-        let currentSeconds = CMTimeGetSeconds(player.currentTime())
+    
+    func updateTimeFrame(_ player:AVPlayer) {
+        let currentSeconds = Int(CMTimeGetSeconds(player.currentTime()))
+        let totalSeconds = CMTimeGetSeconds((player.currentItem?.duration)!)
         
-        let hours:Int = Int(currentSeconds / 3600)
-        let minutes:Int = Int(currentSeconds % 3600 / 60)
-        let seconds:Int = Int(currentSeconds % 60)
+        let hours = Int(currentSeconds / 3600)
+        let minutes = Int(currentSeconds % 3600 / 60)
+        let seconds = Int(currentSeconds % 60)
         
         if hours > 0 {
             self.lblVideoTime.text = String(format: "%i:%02i:%02i", hours, minutes, seconds)
         } else {
             self.lblVideoTime.text = String(format: "%02i:%02i", minutes, seconds)
         }
-        let totalSeconds = CMTimeGetSeconds((player.currentItem?.duration)!)
-        self.videoProgress.progress = Float(currentSeconds / totalSeconds)
+        self.videoProgress.progress = Float(Double(currentSeconds) / totalSeconds)
     }
 }
