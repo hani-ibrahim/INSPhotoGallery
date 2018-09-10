@@ -19,10 +19,10 @@ class CTGalleryPhoto: NSObject, INSPhotoViewable {
     var image: UIImage?
     var thumbnailImage: UIImage?
     
-    var imageURL: NSURL?
-    var thumbnailImageURL: NSURL?
+    var imageURL: URL?
+    var thumbnailImageURL: URL?
     
-    var videoURL: NSURL?
+    var videoURL: URL?
     
     var itemType = CTGalleryPhotoType.Photo
     
@@ -35,22 +35,22 @@ class CTGalleryPhoto: NSObject, INSPhotoViewable {
         self.thumbnailImage = thumbnailImage
     }
     
-    init(imageURL: NSURL?, thumbnailImageURL: NSURL?) {
+    init(imageURL: URL?, thumbnailImageURL: URL?) {
         self.imageURL = imageURL
         self.thumbnailImageURL = thumbnailImageURL
     }
     
-    init (imageURL: NSURL?, thumbnailImage: UIImage) {
+    init (imageURL: URL?, thumbnailImage: UIImage) {
         self.imageURL = imageURL
         self.thumbnailImage = thumbnailImage
     }
     
-    init (videoURL: NSURL?, thumbnailImage: UIImage) {
+    init (videoURL: URL?, thumbnailImage: UIImage) {
         self.videoURL = videoURL
         self.thumbnailImage = thumbnailImage
     }
     
-    init(videoURL: NSURL?, thumbnailImageURL: NSURL?) {
+    init(videoURL: URL?, thumbnailImageURL: URL?) {
         self.videoURL = videoURL
         self.thumbnailImageURL = thumbnailImageURL
     }

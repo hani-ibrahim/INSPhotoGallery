@@ -1,5 +1,8 @@
 platform :ios, "8.0"
-pod 'INSNibLoading'
-pod 'HanekeSwift'
+
+target "INSPhotoGallery" do
+    pod 'INSNibLoading'
+    pod 'Kingfisher'
+end
 
 use_frameworks!

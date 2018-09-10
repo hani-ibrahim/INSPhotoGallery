@@ -20,7 +20,7 @@
 import UIKit
 import AVFoundation
 
-public class INSPhotoViewController: UIViewController, UIScrollViewDelegate {
+open class INSPhotoViewController: UIViewController, UIScrollViewDelegate {
     var photo: INSPhotoViewable
     public var videoPlayer: AVPlayer?
     public var videoPlayerLayer: AVPlayerLayer?
@@ -44,7 +44,7 @@ public class INSPhotoViewController: UIViewController, UIScrollViewDelegate {
     }()
     
     lazy private(set) var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         activityIndicator.startAnimating()
         return activityIndicator
     }()
@@ -62,17 +62,17 @@ public class INSPhotoViewController: UIViewController, UIScrollViewDelegate {
         scalingImageView.delegate = nil
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         scalingImageView.delegate = self
         scalingImageView.frame = view.bounds
-        scalingImageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        scalingImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(scalingImageView)
         
         view.addSubview(activityIndicator)
         activityIndicator.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-        activityIndicator.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleBottomMargin]
+        activityIndicator.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleBottomMargin]
         activityIndicator.sizeToFit()
         
         view.addGestureRecognizer(doubleTapGestureRecognizer)
@@ -93,7 +93,7 @@ public class INSPhotoViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    public override func viewDidDisappear(animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.stopVideo()
         if let player = videoPlayer{
@@ -104,28 +104,29 @@ public class INSPhotoViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    public func initVideo(videoURL: NSURL){
-        let playerItem = AVPlayerItem(URL: videoURL)
+    public func initVideo(_ videoURL: URL){
+        let playerItem = AVPlayerItem(url: videoURL)
         videoPlayer = AVPlayer(playerItem: playerItem)
         videoPlayerLayer = AVPlayerLayer(player: videoPlayer)
         videoPlayerLayer!.frame = scalingImageView.bounds
         scalingImageView.layer.addSublayer(videoPlayerLayer!)
-        videoPlayerLayer!.videoGravity = AVLayerVideoGravityResizeAspect
-        videoPlayer!.muted = false
+        videoPlayerLayer!.videoGravity = .resizeAspect
+        videoPlayer!.isMuted = false
     }
     
-    public func stopVideo(){
-        if let player = videoPlayer{
+    public func stopVideo() {
+        if let player = videoPlayer {
             player.pause()
         }
     }
     
-    public func playVideo(){
-        if let player = videoPlayer{
+    public func playVideo() {
+        if let player = videoPlayer {
             player.play()
         }
     }
-    public override func viewWillLayoutSubviews() {
+    
+    open override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         scalingImageView.frame = view.bounds
         if let playerLayer = videoPlayerLayer{
@@ -134,7 +135,7 @@ public class INSPhotoViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func loadThumbnailImage() {
-        view.bringSubviewToFront(activityIndicator)
+        view.bringSubview(toFront: activityIndicator)
         photo.loadThumbnailImageWithCompletionHandler { [weak self] (image, error) -> () in
             
             let completeLoading = {
@@ -145,10 +146,10 @@ public class INSPhotoViewController: UIViewController, UIScrollViewDelegate {
                 self?.loadFullSizeImage()
             }
             
-            if NSThread.isMainThread() {
+            if Thread.isMainThread {
                 completeLoading()
             } else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     completeLoading()
                 })
             }
@@ -156,31 +157,31 @@ public class INSPhotoViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func loadFullSizeImage() {
-        view.bringSubviewToFront(activityIndicator)
+        view.bringSubview(toFront: activityIndicator)
         self.photo.loadImageWithCompletionHandler({ [weak self] (image, error) -> () in
             let completeLoading = {
                 self?.activityIndicator.stopAnimating()
                 self?.scalingImageView.image = image    
             }
             
-            if NSThread.isMainThread() {
+            if Thread.isMainThread {
                 completeLoading()
             } else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     completeLoading()
                 })
             }
         })
     }
     
-    @objc private func handleLongPressWithGestureRecognizer(recognizer: UILongPressGestureRecognizer) {
-        if recognizer.state == UIGestureRecognizerState.Began {
+    @objc private func handleLongPressWithGestureRecognizer(_ recognizer: UILongPressGestureRecognizer) {
+        if recognizer.state == UIGestureRecognizerState.began {
             longPressGestureHandler?(recognizer)
         }
     }
     
-    @objc private func handleDoubleTapWithGestureRecognizer(recognizer: UITapGestureRecognizer) {
-        let pointInView = recognizer.locationInView(scalingImageView.imageView)
+    @objc private func handleDoubleTapWithGestureRecognizer(_ recognizer: UITapGestureRecognizer) {
+        let pointInView = recognizer.location(in: scalingImageView.imageView)
         var newZoomScale = scalingImageView.maximumZoomScale
         
         if scalingImageView.zoomScale >= scalingImageView.maximumZoomScale || abs(scalingImageView.zoomScale - scalingImageView.maximumZoomScale) <= 0.01 {
@@ -194,24 +195,24 @@ public class INSPhotoViewController: UIViewController, UIScrollViewDelegate {
         let originY = pointInView.y - (height / 2.0)
         
         let rectToZoom = CGRect(x: originX, y: originY, width: width, height: height)
-        scalingImageView.zoomToRect(rectToZoom, animated: true)
+        scalingImageView.zoom(to: rectToZoom, animated: true)
     }
     
     // MARK:- UIScrollViewDelegate
     
-    public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    open func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return scalingImageView.imageView
     }
     
-    public func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
-        scrollView.panGestureRecognizer.enabled = true
+    open func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        scrollView.panGestureRecognizer.isEnabled = true
     }
     
-    public func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
+    open func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         // There is a bug, especially prevalent on iPhone 6 Plus, that causes zooming to render all other gesture recognizers ineffective.
         // This bug is fixed by disabling the pan gesture recognizer of the scroll view when it is not needed.
         if (scrollView.zoomScale == scrollView.minimumZoomScale) {
-            scrollView.panGestureRecognizer.enabled = false;
+            scrollView.panGestureRecognizer.isEnabled = false;
         }
     }
 }

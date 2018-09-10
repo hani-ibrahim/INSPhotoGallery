@@ -1,13 +1,20 @@
 PODS:
-  - HanekeSwift (0.10.1)
-  - INSNibLoading (1.0.1)
+  - INSNibLoading (1.0.2)
+  - Kingfisher (4.8.1)
 
 DEPENDENCIES:
-  - HanekeSwift
   - INSNibLoading
+  - Kingfisher
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - INSNibLoading
+    - Kingfisher
 
 SPEC CHECKSUMS:
-  HanekeSwift: 08e47d3d0f2899ec58e5d257beba0de619aca9e8
-  INSNibLoading: 1b8d0ee31b94c124bffe2609e697e0a43117a78f
+  INSNibLoading: 0244d5b9c30d4642c77b31469cbfd905e8b1efb3
+  Kingfisher: 868c1149679a7ab6869be118faa9b5aed154aaf0
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 65ef0a362e355fd18c77f31b51039f3d5b311896
+
+COCOAPODS: 1.5.0
